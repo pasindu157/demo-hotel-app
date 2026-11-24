@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Calendar, Menu, X, BookmarkCheck } from 'lucide-react';
 import { useBooking } from '../context/BookingContext';
 import { HOTEL_DATA } from '../data/hotelData';
@@ -7,6 +7,7 @@ import { HOTEL_DATA } from '../data/hotelData';
 export default function Navbar() {
   const { bookings, openBookingModal } = useBooking();
   const location = useLocation();
+  const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const activeCount = bookings.filter((b) => b.status === 'Confirmed').length;
@@ -15,7 +16,13 @@ export default function Navbar() {
   const scrollToSection = (id) => {
     setMobileMenuOpen(false);
     if (!isHome) {
-      window.location.href = `/#${id}`;
+      navigate('/');
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 150);
       return;
     }
     const element = document.getElementById(id);
