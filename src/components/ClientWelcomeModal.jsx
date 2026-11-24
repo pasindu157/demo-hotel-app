@@ -5,34 +5,42 @@ import {
   CheckCircle2,
   Mail,
   Phone,
-  MessageSquare,
   ArrowRight,
   X,
-  ExternalLink,
-  Code2,
-  UserCheck
+  Code2
 } from 'lucide-react';
 
 export default function ClientWelcomeModal() {
   const [isOpen, setIsOpen] = useState(false);
-  const [dontShowAgain, setDontShowAgain] = useState(false);
 
   useEffect(() => {
-    // Check if client previously chose "don't show again"
-    const isDismissed = localStorage.getItem('grand_azure_intro_dismissed');
-    if (!isDismissed) {
-      // Gentle 700ms delay so the beautiful background hero renders first
-      const timer = setTimeout(() => {
-        setIsOpen(true);
-      }, 700);
-      return () => clearTimeout(timer);
+    // Clear any past permanent dismissal so the demo modal always pops up when opened
+    try {
+      localStorage.removeItem('grand_azure_intro_dismissed');
+    } catch (e) {
+      // ignore
     }
+
+    // Auto-open on initial load after brief 350ms delay
+    const timer = setTimeout(() => {
+      setIsOpen(true);
+    }, 350);
+
+    return () => clearTimeout(timer);
   }, []);
 
-  const handleDismiss = () => {
-    if (dontShowAgain) {
-      localStorage.setItem('grand_azure_intro_dismissed', 'true');
+  // Lock background scroll when open
+  useEffect(() => {
+    if (isOpen) {
+      const originalStyle = window.getComputedStyle(document.body).overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = originalStyle;
+      };
     }
+  }, [isOpen]);
+
+  const handleDismiss = () => {
     setIsOpen(false);
   };
 
@@ -45,24 +53,29 @@ export default function ClientWelcomeModal() {
       {/* Floating trigger button in bottom-right corner so clients can reopen it anytime */}
       <button
         onClick={handleReopen}
-        className="fixed bottom-5 right-5 z-40 px-3.5 py-2 rounded-full bg-slate-900/90 hover:bg-slate-900 text-amber-400 hover:text-amber-300 text-xs font-bold border border-slate-700 shadow-xl backdrop-blur-md transition-all hover:scale-105 cursor-pointer flex items-center gap-2 group"
+        className="fixed bottom-5 right-5 z-40 px-3.5 py-2 rounded-full bg-slate-900/95 hover:bg-slate-900 text-amber-400 hover:text-amber-300 text-xs font-bold border border-slate-700 shadow-xl backdrop-blur-md transition-all hover:scale-105 cursor-pointer flex items-center gap-2 group"
         title="View Demo Information & Developer Contact"
       >
-        <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
-        <Sparkles className="w-3.5 h-3.5" />
+        <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping shrink-0" />
+        <Sparkles className="w-3.5 h-3.5 shrink-0" />
         <span className="hidden sm:inline">Demo Info & Contact</span>
         <span className="sm:hidden">Demo Info</span>
       </button>
 
-      {/* Modal Overlay */}
+      {/* Modal Overlay: z-[60] to guarantee it displays on top of everything */}
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-slate-950/80 animate-in fade-in duration-200">
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center p-3 sm:p-5 bg-slate-950/80 animate-in fade-in duration-200"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) handleDismiss();
+          }}
+        >
           <div
             className="bg-white rounded-3xl shadow-2xl border border-slate-200 max-w-lg w-full flex flex-col overflow-hidden max-h-[92vh] animate-in zoom-in-95 duration-200"
             style={{ transform: 'translateZ(0)' }}
           >
             {/* Header with decorative badge */}
-            <div className="px-6 pt-6 pb-4 bg-gradient-to-br from-amber-950 via-slate-950 to-amber-900 text-white relative">
+            <div className="px-6 pt-6 pb-4 bg-gradient-to-br from-amber-950 via-slate-950 to-amber-900 text-white relative shrink-0">
               <button
                 onClick={handleDismiss}
                 className="absolute top-4 right-4 p-2 rounded-full text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
@@ -85,7 +98,7 @@ export default function ClientWelcomeModal() {
             </div>
 
             {/* Modal Body */}
-            <div className="p-6 overflow-y-auto space-y-5 text-slate-700 text-xs">
+            <div className="p-6 overflow-y-auto space-y-5 text-slate-700 text-xs flex-1">
               
               {/* How this demo works */}
               <div className="space-y-2.5">
@@ -141,23 +154,6 @@ export default function ClientWelcomeModal() {
                 <p className="text-[11px] text-slate-600 italic border-t border-amber-200/60 pt-2">
                   "Ready to be converted into a production booking platform connected to your payment gateway (Stripe / PayHere) and property management database."
                 </p>
-              </div>
-
-              {/* Checkbox: Don't show again */}
-              <div className="flex items-center gap-2 pt-1">
-                <input
-                  type="checkbox"
-                  id="dont-show-again"
-                  checked={dontShowAgain}
-                  onChange={(e) => setDontShowAgain(e.target.checked)}
-                  className="rounded border-slate-300 text-amber-700 focus:ring-amber-600 cursor-pointer w-4 h-4"
-                />
-                <label
-                  htmlFor="dont-show-again"
-                  className="text-slate-600 text-[11px] cursor-pointer select-none font-medium"
-                >
-                  Don't show this intro window automatically again on this device
-                </label>
               </div>
 
             </div>
