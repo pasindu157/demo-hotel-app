@@ -72,10 +72,10 @@ export default function HomePage() {
   };
 
   return (
-    <div className="bg-slate-50 text-slate-900 selection:bg-amber-600 selection:text-white">
+    <div className="bg-slate-50 text-slate-900 selection:bg-amber-600 selection:text-white w-full max-w-full overflow-x-hidden">
       
       {/* 1. HERO SECTION */}
-      <section className="relative min-h-[90vh] flex items-center justify-center bg-slate-950 text-white overflow-hidden py-24">
+      <section className="relative min-h-[90vh] flex items-center justify-center bg-slate-950 text-white overflow-hidden py-16 sm:py-24 w-full">
         {/* Background Image & Vignette */}
         <div className="absolute inset-0 z-0">
           <img
@@ -86,35 +86,39 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-slate-900/40" />
         </div>
 
-        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center w-full">
           
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-amber-300 text-xs font-semibold tracking-wider uppercase mb-6">
-            <Sparkles className="w-4 h-4 text-amber-400" />
-            <span>Sri Lanka's Premier 5-Star Ocean & Ayurvedic Sanctuary</span>
+          {/* Badge: Responsive, never forces horizontal overflow */}
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-amber-300 text-[10px] sm:text-xs font-semibold tracking-wider uppercase mb-6 max-w-full">
+            <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400 shrink-0" />
+            <span className="truncate">
+              5-Star Ocean & Ayurvedic Sanctuary • Bentota
+            </span>
           </div>
 
           {/* Title */}
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-bold tracking-tight text-white leading-tight">
+          <h1 className="text-3xl sm:text-6xl lg:text-7xl font-serif font-bold tracking-tight text-white leading-tight break-words max-w-full px-2">
             {HOTEL_DATA.name}
           </h1>
-          <p className="mt-4 text-base sm:text-xl text-slate-300 max-w-2xl mx-auto font-light leading-relaxed">
+          <p className="mt-3 sm:mt-4 text-sm sm:text-xl text-slate-300 max-w-2xl mx-auto font-light leading-relaxed px-2">
             {HOTEL_DATA.tagline}
           </p>
-          <div className="mt-3 flex items-center justify-center gap-1.5 text-xs text-amber-400">
-            <MapPin className="w-3.5 h-3.5" />
-            <span>Bentota, Southern Province, Sri Lanka</span>
+          <div className="mt-3 flex items-center justify-center gap-1.5 text-xs text-amber-400 flex-wrap px-2">
+            <span className="flex items-center gap-1">
+              <MapPin className="w-3.5 h-3.5" />
+              <span>Bentota, Sri Lanka</span>
+            </span>
             <span>•</span>
             <div className="flex items-center gap-0.5 text-amber-400 font-bold">
               {[...Array(5)].map((_, i) => (
                 <Star key={i} className="w-3.5 h-3.5 fill-amber-400" />
               ))}
-              <span className="text-white ml-1 font-normal">({HOTEL_DATA.reviewsCount} verified reviews)</span>
+              <span className="text-white ml-1 font-normal">({HOTEL_DATA.reviewsCount} reviews)</span>
             </div>
           </div>
 
           {/* Direct Availability & Booking Bar */}
-          <div className="mt-12 max-w-4xl mx-auto bg-white p-3 sm:p-4 rounded-3xl shadow-2xl border border-slate-100 text-slate-800">
+          <div className="mt-8 sm:mt-12 max-w-4xl mx-auto bg-white p-3 sm:p-4 rounded-3xl shadow-2xl border border-slate-100 text-slate-800 w-full">
             <form onSubmit={handleHeroCheck} className="grid grid-cols-1 sm:grid-cols-4 gap-3 items-center">
               
               <div className="p-3 rounded-2xl bg-slate-50 text-left border border-slate-100">

@@ -32,26 +32,27 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-xs">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20 gap-4">
+    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-xs w-full overflow-hidden">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 w-full">
+        <div className="flex items-center justify-between h-20 gap-2 sm:gap-4 w-full">
           
-          {/* Hotel Brand Logo (Single-line, no wrapping) */}
-          <Link to="/" className="flex items-center gap-3 group shrink-0 whitespace-nowrap">
+          {/* Hotel Brand Logo: Adapts cleanly to mobile without overflowing */}
+          <Link to="/" className="flex items-center gap-2.5 sm:gap-3 group shrink min-w-0">
             <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-amber-700 via-amber-600 to-amber-500 flex items-center justify-center text-white shadow-md shadow-amber-900/20 group-hover:scale-105 transition-transform duration-200 shrink-0">
               <span className="font-serif text-lg sm:text-xl font-bold tracking-widest">GA</span>
             </div>
-            <div className="shrink-0">
-              <span className="text-lg sm:text-xl font-serif font-bold tracking-wide text-slate-900 block leading-tight whitespace-nowrap">
-                {HOTEL_DATA.name}
+            <div className="min-w-0">
+              <span className="text-base sm:text-xl font-serif font-bold tracking-wide text-slate-900 block leading-tight truncate">
+                <span className="sm:hidden">Grand Azure</span>
+                <span className="hidden sm:inline">{HOTEL_DATA.name}</span>
               </span>
-              <span className="block text-[10px] font-semibold tracking-wider text-amber-700 uppercase whitespace-nowrap">
-                Bentota, Sri Lanka • 5-Star Sanctuary
+              <span className="block text-[10px] font-semibold tracking-wider text-amber-700 uppercase truncate">
+                Bentota, Sri Lanka
               </span>
             </div>
           </Link>
 
-          {/* Desktop Navigation (Strictly single-line, whitespace-nowrap, no ugly two-line breaks) */}
+          {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-4 xl:gap-6 text-xs font-semibold tracking-wider uppercase text-slate-600 whitespace-nowrap shrink-0">
             <button
               onClick={() => scrollToSection('about')}
@@ -101,7 +102,7 @@ export default function Navbar() {
             </Link>
           </nav>
 
-          {/* Header Action Button (Strictly single-line, no two-line word wrap) */}
+          {/* Desktop Header Action Button */}
           <div className="hidden sm:flex items-center shrink-0">
             <button
               onClick={() => openBookingModal()}
@@ -112,20 +113,20 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="lg:hidden flex items-center gap-2 shrink-0">
+          {/* Mobile Right Controls: Compact and responsive */}
+          <div className="lg:hidden flex items-center gap-1.5 shrink-0">
             <button
               onClick={() => openBookingModal()}
-              className="px-3 py-1.5 rounded-lg bg-amber-700 text-white text-xs font-bold whitespace-nowrap shrink-0"
+              className="px-3 py-1.5 rounded-lg bg-amber-700 text-white text-xs font-bold whitespace-nowrap shrink-0 hover:bg-amber-800 transition-colors"
             >
               Book
             </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-slate-700 hover:text-slate-900 shrink-0"
+              className="p-2 text-slate-700 hover:text-slate-900 shrink-0 rounded-lg hover:bg-slate-100"
               aria-label="Toggle menu"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
